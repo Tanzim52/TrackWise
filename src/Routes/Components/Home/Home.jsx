@@ -7,7 +7,7 @@ const Home = () => {
         <div>
             <Carousel></Carousel>
 
-            <div>hello madafakaaaaaadxfdxfxd</div>
+            <div>hello madafakaaaaaadxfdxfxd fuck u bitch</div>
         </div>
     );
 };
