@@ -7,7 +7,7 @@ const Home = () => {
         <div>
             <Carousel></Carousel>
 
-            <div>hello madafaka</div>
+            <div>hello madafakaaaaaa</div>
         </div>
     );
 };
