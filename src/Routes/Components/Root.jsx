@@ -6,10 +6,12 @@ import Footer from "./Footer/Footer";
 const Root = () => {
     return (
         <>
-        <NavBar></NavBar>
-        <Outlet></Outlet>
-        <Footer></Footer>
-        
+            <NavBar></NavBar>
+            <div className="main-bg">
+                <Outlet></Outlet>
+            </div>
+            <Footer></Footer>
+
         </>
     );
 };
