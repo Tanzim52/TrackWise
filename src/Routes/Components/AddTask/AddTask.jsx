@@ -36,7 +36,7 @@ const AddTask = ({ onSubmit }) => {
       className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg animate__animated animate__fadeIn"
     >
       <h2 className="text-3xl font-bold mb-4 text-center animate__animated animate__zoomIn">
-        🚀 Add New Task
+        Add New Task
       </h2>
 
       <form
