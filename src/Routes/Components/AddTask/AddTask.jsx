@@ -29,13 +29,13 @@ const AddTask = () => {
     console.log("Task Added:", taskData)
     
     try {
-      const response = await axios.post("YOUR_API_ENDPOINT_HERE", taskData);
+      const response = await axios.post("http://localhost:5000/tasks", taskData);
       console.log("Task Added:", response.data);
       alert("Task successfully added!");
       reset();
       setTags([]);
     } catch (error) {
-      console.error("Error adding task:", error);
+      console.error("Error adding task:", error,error.message);
       alert("Failed to add task.");
       
     }
