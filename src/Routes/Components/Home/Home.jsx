@@ -6,6 +6,8 @@ const Home = () => {
     return (
         <div>
             <Carousel></Carousel>
+
+            <div>hello madafaka</div>
         </div>
     );
 };
