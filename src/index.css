@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* 
+--text: #040316;
+--background: #fefdec;
+--primary: #4c1a36;
+--secondary: #dfab81;
+--accent: #bcaeba; */
+
+.main-bg{
+  background-color: #fefdec ;
+}
+
+.mainPrimary{
+  background-color: #4c1a36;
+}
+
+.mainSecondary{
+  background-color: #dfab81;
+}
+
+.secondAccent{
+  background-color: #395c6b;
+}
