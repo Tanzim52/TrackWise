@@ -52,6 +52,10 @@ const router = createBrowserRouter([
           path: "my-tasks",
           element: <MyTasks></MyTasks>
         },
+        {
+          path: "reminders",
+          element: <Reminder></Reminder>
+        },
       ]
 
   },

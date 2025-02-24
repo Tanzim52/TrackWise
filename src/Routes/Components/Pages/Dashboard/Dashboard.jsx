@@ -20,6 +20,7 @@ const Dashboard = () => {
                             {/* Sidebar content here */}
                             <li><Link to="my-tasks">My Tasks</Link></li>
                             <li><Link to='add-tasks'>Add Task</Link></li>
+                            <li><Link to='reminders'>Reminders</Link></li>
                         </ul>
                     </div>
                 </div>
