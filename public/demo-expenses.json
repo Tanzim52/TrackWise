@@ -1,0 +1,144 @@
+[
+    {
+      "amount": "2500",
+      "category": "Food",
+      "notes": "Dinner at a restaurant",
+      "dateTime": "02/24/2025, 07:30 PM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "750",
+      "category": "Transport",
+      "notes": "Taxi ride to airport",
+      "dateTime": "02/23/2025, 10:15 AM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "3000",
+      "category": "Shopping",
+      "notes": "Bought new clothes",
+      "dateTime": "02/22/2025, 03:00 PM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "1500",
+      "category": "Entertainment",
+      "notes": "Movie tickets for two",
+      "dateTime": "02/21/2025, 05:45 PM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "500",
+      "category": "Groceries",
+      "notes": "Weekly grocery shopping",
+      "dateTime": "02/20/2025, 11:00 AM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "1200",
+      "category": "Utilities",
+      "notes": "Electricity bill payment",
+      "dateTime": "02/19/2025, 02:00 PM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "3500",
+      "category": "Travel",
+      "notes": "Trip to Cox's Bazar",
+      "dateTime": "02/18/2025, 08:00 AM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "900",
+      "category": "Health",
+      "notes": "Doctor's consultation fee",
+      "dateTime": "02/17/2025, 04:30 PM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "450",
+      "category": "Snacks",
+      "notes": "Coffee and pastries",
+      "dateTime": "02/16/2025, 10:00 AM",
+      "email": "mahin1575@gmail.com"
+    },
+    {
+      "amount": "1200",
+      "category": "Fitness",
+      "notes": "Gym membership fee",
+      "dateTime": "02/15/2025, 06:00 PM",
+      "email": "mahin1575@gmail.com"
+    }
+  ]
+[
+    {
+      "amount": "2500",
+      "category": "Food",
+      "notes": "Dinner at a restaurant",
+      "dateTime": "02/24/2025, 07:30 PM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "750",
+      "category": "Transport",
+      "notes": "Taxi ride to airport",
+      "dateTime": "02/23/2025, 10:15 AM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "3000",
+      "category": "Shopping",
+      "notes": "Bought new clothes",
+      "dateTime": "02/22/2025, 03:00 PM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "1500",
+      "category": "Entertainment",
+      "notes": "Movie tickets for two",
+      "dateTime": "02/21/2025, 05:45 PM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "500",
+      "category": "Groceries",
+      "notes": "Weekly grocery shopping",
+      "dateTime": "02/20/2025, 11:00 AM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "1200",
+      "category": "Utilities",
+      "notes": "Electricity bill payment",
+      "dateTime": "02/19/2025, 02:00 PM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "3500",
+      "category": "Travel",
+      "notes": "Trip to Cox's Bazar",
+      "dateTime": "02/18/2025, 08:00 AM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "900",
+      "category": "Health",
+      "notes": "Doctor's consultation fee",
+      "dateTime": "02/17/2025, 04:30 PM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "450",
+      "category": "Snacks",
+      "notes": "Coffee and pastries",
+      "dateTime": "02/16/2025, 10:00 AM",
+      "email": "zubayer.nahin@gmail.com"
+    },
+    {
+      "amount": "1200",
+      "category": "Fitness",
+      "notes": "Gym membership fee",
+      "dateTime": "02/15/2025, 06:00 PM",
+      "email": "zubayer.nahin@gmail.com"
+    }
+  ]
