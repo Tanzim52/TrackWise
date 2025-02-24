@@ -24,6 +24,7 @@ const Dashboard = () => {
                             <li><Link to='expenses'>My Expenses</Link></li>
                             <li><Link to='add-expense'>Add Expenses</Link></li>
                             <li><Link to='insights'>Expense Insights</Link></li>
+                            <li><Link to='/'>Home</Link></li>
                         </ul>
                     </div>
                 </div>
