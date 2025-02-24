@@ -10,7 +10,7 @@ import AddTask from './Components/AddTask/AddTask';
 import MyTasks from './Components/MyTasks/MyTasks';
 import SignUp from './Components/SignUp/SignUp';
 import SignIn from './Components/SignIn/SignIn';
-import Tasks from './Components/Pages/Dashboard/Tasks';
+import Dashboard from './Components/Pages/Dashboard/Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -40,8 +40,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/tasks",
-    element: <Tasks></Tasks>,
+    path: "/dashboard",
+    element: <Dashboard></Dashboard>,
     children:
       [
         {
