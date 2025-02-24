@@ -5,7 +5,7 @@ import "animate.css";
 import { motion } from "framer-motion";
 import { FaEdit, FaSave, FaMoneyBillWave } from "react-icons/fa";
 
-const categories = ["Food", "Transport", "Entertainment", "Shopping"];
+const categories = ["Food", "Transport", "Entertainment", "Shopping", "Others"];
 
 const MyBudget = () => {
   const [budget, setBudget] = useState({
