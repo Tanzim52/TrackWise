@@ -13,6 +13,7 @@ import SignIn from './Components/SignIn/SignIn';
 import Dashboard from './Components/Pages/Dashboard/Dashboard';
 import AddExpense from './Components/Pages/Expense-features/AddExpense/AddExpense';
 import ExpenseInsights from './Components/Pages/Expense-features/Insights/ExpenseInsights';
+import MyBudget from './Components/Pages/Expense-features/MyBudget/MyBudget';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
           path:'add-expense',
           element:<AddExpense></AddExpense>
         },
+        {
+          path:"my-budget",
+          element:<MyBudget></MyBudget>
+        },
+
         {
           path:"insights",
           element:<ExpenseInsights></ExpenseInsights>
