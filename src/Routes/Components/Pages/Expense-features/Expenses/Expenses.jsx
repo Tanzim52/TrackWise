@@ -2,7 +2,7 @@
 
 const Expenses = () => {
     return (
-        <div>
+        <div className="">
             This is Expenses.
         </div>
     );

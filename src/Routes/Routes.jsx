@@ -5,12 +5,14 @@ import Error from './Components/Error/Error';
 import Home from './Components/Home/Home';
 // import Dashboard from './Components/Pages/Dashboard/Dashboard';
 import Reminder from './Components/Pages/Reminder/Reminder';
-import Expenses from './Components/Pages/Expenses/Expenses';
+import Expenses from './Components/Pages/Expense-features/Expenses/Expenses';
 import AddTask from './Components/AddTask/AddTask';
 import MyTasks from './Components/MyTasks/MyTasks';
 import SignUp from './Components/SignUp/SignUp';
 import SignIn from './Components/SignIn/SignIn';
 import Dashboard from './Components/Pages/Dashboard/Dashboard';
+import AddExpense from './Components/Pages/Expense-features/AddExpense/AddExpense';
+import ExpenseInsights from './Components/Pages/Expense-features/Insights/ExpenseInsights';
 
 const router = createBrowserRouter([
   {
@@ -29,10 +31,7 @@ const router = createBrowserRouter([
         path: "/reminders",
         element: <Reminder></Reminder>
       },
-      {
-        path: "/expenses",
-        element: <Expenses></Expenses>
-      },
+     
       {
 
       }
@@ -56,6 +55,18 @@ const router = createBrowserRouter([
           path: "reminders",
           element: <Reminder></Reminder>
         },
+        {
+          path: "expenses",
+          element:<Expenses></Expenses>
+        },
+        {
+          path:'add-expense',
+          element:<AddExpense></AddExpense>
+        },
+        {
+          path:"insights",
+          element:<ExpenseInsights></ExpenseInsights>
+        }
       ]
 
   },

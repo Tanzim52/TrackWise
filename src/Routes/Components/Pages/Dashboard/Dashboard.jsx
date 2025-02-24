@@ -4,8 +4,8 @@ import { Link, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
     return (
-        <div className="grid grid-cols-12  ">
-            <section className="col-span-2 grid-flow-col-dense " >
+        <div className="grid grid-cols-12  items-stretch">
+            <section className="col-span-2 grid-flow-col-dense" >
                 <div className="drawer lg:drawer-open">
                     <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                     <div className="drawer-content flex flex-col items-center justify-center">
@@ -21,12 +21,15 @@ const Dashboard = () => {
                             <li><Link to="my-tasks">My Tasks</Link></li>
                             <li><Link to='add-tasks'>Add Task</Link></li>
                             <li><Link to='reminders'>Reminders</Link></li>
+                            <li><Link to='expenses'>My Expenses</Link></li>
+                            <li><Link to='add-expense'>Add Expenses</Link></li>
+                            <li><Link to='insights'>Expense Insights</Link></li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <div className="col-span-10 py-10" >
+            <div className="col-span-10" >
                 <Outlet></Outlet>
             </div>
 
