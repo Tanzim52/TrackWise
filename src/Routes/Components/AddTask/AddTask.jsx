@@ -14,13 +14,13 @@ const AddTask = () => {
   console.log(user?.email, user?.displayName, user?.photoURL);
 
   // Handle tag input
-  // const handleAddTag = (e) => {
-  //   if (e.key === "Enter" && e.target.value.trim()) {
-  //     setTags([...tags, e.target.value.trim()]);
-  //     e.target.value = "";
-  //     e.preventDefault();
-  //   }
-  // };
+  const handleAddTag = (e) => {
+    if (e.key === "Enter" && e.target.value.trim()) {
+      setTags([...tags, e.target.value.trim()]);
+      e.target.value = "";
+      e.preventDefault();
+    }
+  };
 
   // Handle form submission
   const submitForm = async (data) => {
@@ -57,6 +57,7 @@ const AddTask = () => {
       </h2>
 
       <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
+        {/* User Info (Readonly Fields) */}
 
 
         {/* Task Title */}
@@ -101,7 +102,7 @@ const AddTask = () => {
         </motion.div>
 
         {/* Tags Input */}
-        <div className="hidden">
+        <div className="hidden" >
           <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.8, duration: 0.5 }}>
             <label className="block font-semibold">Email</label>
             <input type="email" value={user?.email || ""} readOnly className="w-full px-3 py-2 border rounded-md" />
@@ -114,17 +115,39 @@ const AddTask = () => {
           </motion.div>
         </div>
 
+
+        <motion.div
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+          className="flex items-center space-x-2"
+        >
+          <input type="checkbox" {...register("reminder")} />
+          <label className="font-semibold">Set Reminder</label>
+          {watch("reminder") && (
+            <input
+              type="time"
+              {...register("reminderTime")}
+              className="px-3 py-2 border rounded-md"
+            />
+          )}
+        </motion.div>
+
         {/* Submit Button */}
         <motion.button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
           Add Task 🚀
         </motion.button>
-
-        {/* User Info (Readonly Fields) */}
-
-
       </form>
     </motion.div>
   );
 };
 
 export default AddTask;
+
+
+
+
+
+
+
+
