@@ -3,13 +3,14 @@ import { createBrowserRouter } from 'react-router-dom';
 import Root from './Components/Root';
 import Error from './Components/Error/Error';
 import Home from './Components/Home/Home';
-import Tasks from './Components/Pages/Tasks/Tasks';
+// import Dashboard from './Components/Pages/Dashboard/Dashboard';
 import Reminder from './Components/Pages/Reminder/Reminder';
 import Expenses from './Components/Pages/Expenses/Expenses';
 import AddTask from './Components/AddTask/AddTask';
 import MyTasks from './Components/MyTasks/MyTasks';
 import SignUp from './Components/SignUp/SignUp';
 import SignIn from './Components/SignIn/SignIn';
+import Tasks from './Components/Pages/Dashboard/Tasks';
 
 const router = createBrowserRouter([
   {
@@ -21,22 +22,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home></Home>
       },
-      {
-        path: "/tasks",
-        element: <Tasks></Tasks>,
-        children:
-          [
-            {
-              path: "add-tasks",
-              element: <AddTask></AddTask>
-            },
-            {
-              path: "my-tasks",
-              element: <MyTasks></MyTasks>
-            },
-          ]
-
-      },
+      
       
 
       {
@@ -52,6 +38,22 @@ const router = createBrowserRouter([
       }
 
     ],
+  },
+  {
+    path: "/tasks",
+    element: <Tasks></Tasks>,
+    children:
+      [
+        {
+          path: "add-tasks",
+          element: <AddTask></AddTask>
+        },
+        {
+          path: "my-tasks",
+          element: <MyTasks></MyTasks>
+        },
+      ]
+
   },
   {
     path: "/signup",

@@ -5,6 +5,7 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const MyTasks = () => {
     const { user } = useContext(AuthContext);
+    console.log(user?.email, user?.displayName, user?.photoURL);
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
