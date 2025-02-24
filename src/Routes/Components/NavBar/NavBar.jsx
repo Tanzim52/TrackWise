@@ -1,14 +1,25 @@
+import { useContext } from "react";
+import { MdLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
-
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const NavBar = () => {
 
+    const { logout } = useContext(AuthContext); // Access the logout function
 
+    const handleLogout = async () => {
+        try {
+            await logout(); // Call the logout function
+            console.log("Logged out successfully!");
+        } catch (error) {
+            console.error("Logout error:", error.message);
+        }
+    };
 
     const links = <>
-    <li> <Link to="tasks" >Tasks</Link> </li>
-    <li> <Link to="reminders" >Reminders</Link> </li>
-    <li> <Link to="expenses" >Expenses</Link> </li>
+        <li> <Link to="tasks" >Tasks</Link> </li>
+        <li> <Link to="reminders" >Reminders</Link> </li>
+        <li> <Link to="expenses" >Expenses</Link> </li>
     </>
 
 
@@ -37,7 +48,7 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Button</a>
+                <a onClick={handleLogout} className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>Logout</p></a>
             </div>
         </div>
     );

@@ -8,6 +8,8 @@ import Reminder from './Components/Pages/Reminder/Reminder';
 import Expenses from './Components/Pages/Expenses/Expenses';
 import AddTask from './Components/AddTask/AddTask';
 import MyTasks from './Components/MyTasks/MyTasks';
+import SignUp from './Components/SignUp/SignUp';
+import SignIn from './Components/SignIn/SignIn';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,7 @@ const router = createBrowserRouter([
           ]
 
       },
+      
 
       {
         path: "/reminders",
@@ -49,6 +52,14 @@ const router = createBrowserRouter([
       }
 
     ],
+  },
+  {
+    path: "/signup",
+    element:<SignUp></SignUp>
+  },
+  {
+    path: "/signin",
+    element:<SignIn></SignIn>
   },
 ]);
 
