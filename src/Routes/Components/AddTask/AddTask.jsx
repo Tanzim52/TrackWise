@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
+import axios from "axios";
 import "animate.css";
 
-const AddTask = ({ onSubmit }) => {
+const AddTask = () => {
   const { register, handleSubmit, reset, watch } = useForm();
   const [tags, setTags] = useState([]);
 
@@ -17,16 +18,29 @@ const AddTask = ({ onSubmit }) => {
   };
 
   // Handle form submission
-  const submitForm = (data) => {
+  const submitForm = async (data) => {
     if (!data.title) {
       alert("Title is required!");
       return;
     }
+    
     const taskData = { ...data, tags };
-    onSubmit(taskData);
-    reset();
-    setTags([]);
+
+    console.log("Task Added:", taskData)
+    
+    try {
+      const response = await axios.post("http://localhost:5000/tasks", taskData);
+      console.log("Task Added:", response.data);
+      alert("Task successfully added!");
+      reset();
+      setTags([]);
+    } catch (error) {
+      console.error("Error adding task:", error,error.message);
+      alert("Failed to add task.");
+      
+    }
   };
+
 
   return (
     <motion.div

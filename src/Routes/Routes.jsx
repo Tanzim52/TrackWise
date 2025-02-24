@@ -7,6 +7,7 @@ import Tasks from './Components/Pages/Tasks/Tasks';
 import Reminder from './Components/Pages/Reminder/Reminder';
 import Expenses from './Components/Pages/Expenses/Expenses';
 import AddTask from './Components/AddTask/AddTask';
+import MyTasks from './Components/MyTasks/MyTasks';
 
 const router = createBrowserRouter([
   {
@@ -21,13 +22,20 @@ const router = createBrowserRouter([
       {
         path: "/tasks",
         element: <Tasks></Tasks>,
-        children: [{
-          path: "add-tasks",
-          element: <AddTask></AddTask>
-        },]
-          
+        children:
+          [
+            {
+              path: "add-tasks",
+              element: <AddTask></AddTask>
+            },
+            {
+              path: "my-tasks",
+              element: <MyTasks></MyTasks>
+            },
+          ]
+
       },
-      
+
       {
         path: "/reminders",
         element: <Reminder></Reminder>
