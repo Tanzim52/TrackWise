@@ -1,14 +1,48 @@
 import { useForm } from "react-hook-form";
+import { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import { FaMoneyBillWave, FaTag, FaCalendarAlt, FaStickyNote } from "react-icons/fa";
+import axios from "axios";
 import "animate.css";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
 
 const AddExpense = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user?.email);
   const { register, handleSubmit, reset } = useForm();
+  const [currentDateTime, setCurrentDateTime] = useState("");
 
-  const onSubmit = (data) => {
-    console.log("Expense Added:", data);
-    reset();
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      };
+      setCurrentDateTime(new Intl.DateTimeFormat("en-US", options).format(now));
+    };
+
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const onSubmit = async (data) => {
+    // Add user's email to the expense data along with other form data
+    const expenseData = { ...data, dateTime: currentDateTime, email: user?.email };
+
+    try {
+      const response = await axios.post("http://localhost:5000/expenses", expenseData);
+      console.log("Expense added:", response.data);
+      reset();
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
 
   return (
@@ -62,7 +96,7 @@ const AddExpense = () => {
             </select>
           </motion.div>
 
-          {/* Date */}
+          {/* Date & Time (Read-Only) */}
           <motion.div
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -71,9 +105,10 @@ const AddExpense = () => {
           >
             <FaCalendarAlt className="absolute left-3 top-3 text-[#4c1a36]" />
             <input
-              type="date"
-              {...register("date", { required: true })}
-              className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] bg-[#fefdec]"
+              type="text"
+              value={currentDateTime}
+              readOnly
+              className="w-full pl-10 py-2 border border-[#dfab81] rounded-md bg-gray-200 text-gray-600 cursor-not-allowed"
             />
           </motion.div>
 
@@ -85,11 +120,10 @@ const AddExpense = () => {
             className="relative"
           >
             <FaStickyNote className="absolute left-3 top-3 text-[#4c1a36]" />
-            <input
-              type="text"
+            <textarea
               {...register("notes")}
               placeholder="Notes (optional)"
-              className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] bg-[#fefdec]"
+              className="w-full pl-10 pt-3 h-24 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] bg-[#fefdec] resize-none"
             />
           </motion.div>
 
