@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { MdLogout } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const NavBar = () => {
+
+    const navigate = useNavigate()
 
     const { logout } = useContext(AuthContext); // Access the logout function
 
@@ -11,6 +13,7 @@ const NavBar = () => {
         try {
             await logout(); // Call the logout function
             console.log("Logged out successfully!");
+            navigate('signin')
         } catch (error) {
             console.error("Logout error:", error.message);
         }
