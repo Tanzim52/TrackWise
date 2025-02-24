@@ -5,9 +5,10 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const NavBar = () => {
 
+
     const navigate = useNavigate()
 
-    const { logout } = useContext(AuthContext); // Access the logout function
+    const { logout, user } = useContext(AuthContext); // Access the logout function
 
     const handleLogout = async () => {
         try {
@@ -51,7 +52,11 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a onClick={handleLogout} className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>Logout</p></a>
+                {
+                    user?.email ? (<a onClick={handleLogout} className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>Logout</p></a>)
+                    :
+                    <Link to="signin" className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>Login</p></Link>
+                }
             </div>
         </div>
     );
