@@ -4,6 +4,7 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const MyTasks = () => {
     const { user } = useContext(AuthContext);
+    console.log(user?.email, user?.displayName, user?.photoURL);
     const [tasks, setTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null); // Holds the task being edited
     const [modalOpen, setModalOpen] = useState(false); // Controls modal visibility

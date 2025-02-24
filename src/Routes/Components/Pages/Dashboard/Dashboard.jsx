@@ -2,7 +2,7 @@
 
 import { Link, Outlet } from "react-router-dom";
 
-const Tasks = () => {
+const Dashboard = () => {
     return (
         <div className="flex">
             <section>
@@ -34,4 +34,4 @@ const Tasks = () => {
     );
 };
 
-export default Tasks;
+export default Dashboard;

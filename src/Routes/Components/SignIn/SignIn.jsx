@@ -3,13 +3,15 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { FaGoogle, FaEnvelope, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-// import { auth } from "../Firebase/firebase.init";
 import "animate.css";
+import app from "../Firebase/firebase.init"; 
+
+const auth = getAuth(app); // Initialize Firebase Auth
 
 const SignIn = () => {
-  const { googleLogin } = useContext(AuthContext); // Get Google login from context
+  const { googleLogin } = useContext(AuthContext); // Get Google login function
   const { register, handleSubmit, reset } = useForm();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +23,7 @@ const SignIn = () => {
     setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      await signInWithEmailAndPassword(auth, data.email, data.password); // Use correct auth instance
       navigate("/"); // Redirect after successful login
     } catch (err) {
       setError("Invalid email or password. Please try again.");
@@ -34,7 +36,7 @@ const SignIn = () => {
   // Handle Google Sign In
   const handleGoogleSignIn = async () => {
     try {
-      await googleLogin(); // Using the function from AuthContext
+      await googleLogin(); // Use function from context
       navigate("/");
     } catch (err) {
       setError("Google Sign-In failed. Try again.");

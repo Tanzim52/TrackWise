@@ -21,7 +21,7 @@ const NavBar = () => {
     };
 
     const links = <>
-        <li> <Link to="tasks" >Tasks</Link> </li>
+        <li> <Link to="dashboard" >Dashboard</Link> </li>
         <li> <Link to="reminders" >Reminders</Link> </li>
         <li> <Link to="expenses" >Expenses</Link> </li>
     </>
