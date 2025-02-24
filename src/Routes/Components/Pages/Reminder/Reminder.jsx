@@ -23,6 +23,18 @@ const Reminders = () => {
     fetchTasks();
   }, [user?.email]);
 
+  // Function to format reminder time to 12-hour format with AM/PM
+  const formatTime = (timeString) => {
+    if (!timeString) return "Not Set";
+
+    const date = new Date(`1970-01-01T${timeString}`);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
   // Sorting function
   const sortTasks = (tasks, sortBy) => {
     return tasks.slice().sort((a, b) => {
@@ -95,8 +107,12 @@ const Reminders = () => {
                 <tr key={task._id}>
                   <td>{index + 1}</td>
                   <td className="font-medium">{task.title}</td>
-                  <td className="text-blue-600">{task.reminderTime || "Not Set"}</td>
-                  <td className={`badge ${task.priority?.toLowerCase()}`}>{task.priority}</td>
+                  <td className="text-blue-600">
+                    {formatTime(task.reminderTime)}
+                  </td>
+                  <td className={`badge ${task.priority?.toLowerCase()}`}>
+                    {task.priority}
+                  </td>
                   <td>{task.dueDate || "N/A"}</td>
                   <td>
                     <button
