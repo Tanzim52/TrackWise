@@ -20,7 +20,7 @@ const Dashboard = () => {
                 ${isDrawerOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
                 style={{ height: "100vh" }}
             >
-                <div className="w-80 p-4 relative">
+                <div className="w-80 p-4 h-full relative">
                     {/* Close button (only visible on smaller screens) */}
                     <button 
                         onClick={closeDrawer} 
