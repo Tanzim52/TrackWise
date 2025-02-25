@@ -61,7 +61,9 @@ const ExpenseInsights = () => {
             try {
                 const [expensesRes, budgetRes] = await Promise.all([
                     axios.get('http://localhost:5000/expenses'),
-                    axios.get('http://localhost:5000/budget')
+                    axios.get('http://localhost:5000/budget', {
+                        params: { email: user?.email } // Ensure user.email is defined
+                    })
                 ]);
                 setExpenses(expensesRes?.data ?? []);
                 setBudget(budgetRes?.data ?? null);
@@ -71,6 +73,7 @@ const ExpenseInsights = () => {
                 setLoading(false);
             }
         };
+        
         fetchData();
     }, []);
 
