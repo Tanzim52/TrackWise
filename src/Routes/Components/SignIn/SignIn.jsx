@@ -25,7 +25,8 @@ const SignIn = () => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password); // Use correct auth instance
       navigate("/"); // Redirect after successful login
-    } catch (err) {
+    } catch (error) {
+        console.error("Error signing in:", error.message);
       setError("Invalid email or password. Please try again.");
     }
 
@@ -38,7 +39,8 @@ const SignIn = () => {
     try {
       await googleLogin(); // Use function from context
       navigate("/");
-    } catch (err) {
+    } catch (error) {
+        console.error("Google Sign-In Error:", error.message);
       setError("Google Sign-In failed. Try again.");
     }
   };
