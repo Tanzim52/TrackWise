@@ -14,6 +14,7 @@ import Dashboard from './Components/Pages/Dashboard/Dashboard';
 import AddExpense from './Components/Pages/Expense-features/AddExpense/AddExpense';
 import ExpenseInsights from './Components/Pages/Expense-features/Insights/ExpenseInsights';
 import MyBudget from './Components/Pages/Expense-features/MyBudget/MyBudget';
+import DashHome from './Components/Pages/Dashboard/DashHome/DashHome';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     element: <Dashboard></Dashboard>,
     children:
       [
+        {
+          path: "/dashboard",
+          element:<DashHome></DashHome>
+        },
         {
           path: "add-tasks",
           element: <AddTask></AddTask>
