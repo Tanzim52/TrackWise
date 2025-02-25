@@ -26,14 +26,14 @@ const MyBudget = () => {
 
   const fetchBudget = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/budget", { params: { email: user.email } });
+      const { data } = await axios.get("http://localhost:5000/budget", { params: { email: user?.email } });
       const userBudget = data || { daily: {}, weekly: {}, monthly: {} };
       
-      if (Object.keys(userBudget.monthly).length) {
-        const total = Object.values(userBudget.monthly).reduce((sum, val) => sum + Number(val), 0);
-        const percentages = categories.reduce((acc, cat) => ({
+      if (Object.keys(userBudget?.monthly || {})?.length) {
+        const total = Object.values(userBudget?.monthly || {})?.reduce((sum, val) => sum + Number(val), 0);
+        const percentages = categories?.reduce((acc, cat) => ({
           ...acc,
-          [cat]: parseFloat(((userBudget.monthly[cat] / total) * 100).toFixed(2))
+          [cat]: parseFloat(((userBudget?.monthly?.[cat] / total) * 100)?.toFixed(2))
         }), {});
         setCategoryPercentages(percentages);
         setMonthlyTotal(total);
@@ -44,29 +44,29 @@ const MyBudget = () => {
   };
 
   const balancePercentages = (changedCategory, newValue) => {
-    const oldValue = categoryPercentages[changedCategory];
+    const oldValue = categoryPercentages?.[changedCategory];
     const delta = newValue - oldValue;
     if (delta === 0) return { ...categoryPercentages };
 
     const newPercentages = { ...categoryPercentages, [changedCategory]: newValue };
-    const otherCategories = categories.filter(cat => cat !== changedCategory);
-    const totalOthers = otherCategories.reduce((sum, cat) => sum + newPercentages[cat], 0);
+    const otherCategories = categories?.filter(cat => cat !== changedCategory);
+    const totalOthers = otherCategories?.reduce((sum, cat) => sum + newPercentages?.[cat], 0);
     const remainingTotal = 100 - newValue;
 
     if (totalOthers === 0) {
-      otherCategories.forEach(cat => { newPercentages[cat] = 0 });
+      otherCategories?.forEach(cat => { newPercentages[cat] = 0 });
     } else {
       const scaleFactor = remainingTotal / totalOthers;
-      otherCategories.forEach(cat => {
-        newPercentages[cat] = parseFloat((newPercentages[cat] * scaleFactor).toFixed(2));
+      otherCategories?.forEach(cat => {
+        newPercentages[cat] = parseFloat((newPercentages?.[cat] * scaleFactor)?.toFixed(2));
       });
     }
 
     // Fix rounding errors
-    const currentTotal = Object.values(newPercentages).reduce((a, b) => a + b, 0);
+    const currentTotal = Object.values(newPercentages)?.reduce((a, b) => a + b, 0);
     if (currentTotal !== 100) {
       const adjustment = 100 - currentTotal;
-      const firstAdjustable = otherCategories.find(cat => newPercentages[cat] > 0);
+      const firstAdjustable = otherCategories?.find(cat => newPercentages?.[cat] > 0);
       if (firstAdjustable) newPercentages[firstAdjustable] += adjustment;
     }
 
@@ -81,7 +81,7 @@ const MyBudget = () => {
 
   const handleSubmit = async () => {
     if (!user?.email) return;
-    if (parseFloat(Object.values(categoryPercentages).reduce((a, b) => a + b, 0).toFixed(2) !== "100.00")) {
+    if (parseFloat(Object.values(categoryPercentages)?.reduce((a, b) => a + b, 0)?.toFixed(2) !== "100.00")) {
       alert("Total must equal 100%");
       return;
     }
@@ -93,21 +93,21 @@ const MyBudget = () => {
         return;
       }
 
-      const budgetPayload = categories.reduce((acc, cat) => ({
+      const budgetPayload = categories?.reduce((acc, cat) => ({
         ...acc,
-        monthly: { ...acc.monthly, [cat]: parseFloat((monthlyValue * categoryPercentages[cat] / 100).toFixed(2)) },
-        daily: { ...acc.daily, [cat]: parseFloat((monthlyValue * categoryPercentages[cat] / 100 / 30).toFixed(2)) },
-        weekly: { ...acc.weekly, [cat]: parseFloat((monthlyValue * categoryPercentages[cat] / 100 / 4.345).toFixed(2)) }
-      }), { email: user.email, monthly: {}, daily: {}, weekly: {} });
+        monthly: { ...acc?.monthly, [cat]: parseFloat((monthlyValue * categoryPercentages?.[cat] / 100)?.toFixed(2)) },
+        daily: { ...acc?.daily, [cat]: parseFloat((monthlyValue * categoryPercentages?.[cat] / 100 / 30)?.toFixed(2)) },
+        weekly: { ...acc?.weekly, [cat]: parseFloat((monthlyValue * categoryPercentages?.[cat] / 100 / 4.345)?.toFixed(2)) }
+      }), { email: user?.email, monthly: {}, daily: {}, weekly: {} });
 
-      const method = Object.keys(budgetData.monthly).length ? "put" : "post";
+      const method = Object.keys(budgetData?.monthly || {})?.length ? "put" : "post";
       await axios[method]("http://localhost:5000/budget", budgetPayload);
       await fetchBudget();
       setEditing(false);
     } catch (error) { console.error("Budget update failed:", error) }
   };
 
-  const totalPercentage = Object.values(categoryPercentages).reduce((a, b) => a + b, 0).toFixed(2);
+  const totalPercentage = Object.values(categoryPercentages)?.reduce((a, b) => a + b, 0)?.toFixed(2);
 
   return (
     <div className="bg-gradient-to-r from-[#4c1a36] to-[#395c6b] min-h-screen text-white py-16 px-8 md:px-20">
@@ -127,28 +127,28 @@ const MyBudget = () => {
               <label className="block text-lg font-semibold mb-2">Monthly Budget (৳)</label>
               <div className="flex items-center">
                 <FaMoneyBillWave className="text-[#395c6b] text-xl mr-2" />
-                <input type="number" value={monthlyTotal} onChange={(e) => setMonthlyTotal(e.target.value)}
+                <input type="number" value={monthlyTotal} onChange={(e) => setMonthlyTotal(e?.target?.value)}
                   className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#395c6b] text-[#4c1a36]"
                   autoFocus />
               </div>
             </div>
 
-            {categories.map(category => (
+            {categories?.map(category => (
               <div key={category} className="bg-white p-4 rounded-lg shadow">
                 <div className="flex justify-between items-center mb-2">
                   <label className="text-lg font-semibold">{category}</label>
                   <span className="text-sm text-gray-600">
-                    {categoryPercentages[category].toFixed(2)}%
+                    {categoryPercentages?.[category]?.toFixed(2)}%
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <input type="range" min="0" max="100" step="0.1" 
-                    value={categoryPercentages[category]} 
-                    onChange={(e) => handlePercentageChange(category, e.target.value)}
+                    value={categoryPercentages?.[category]} 
+                    onChange={(e) => handlePercentageChange(category, e?.target?.value)}
                     className="w-full range-slider" />
                   <input type="number" min="0" max="100" step="0.1"
-                    value={categoryPercentages[category].toFixed(2)}
-                    onChange={(e) => handlePercentageChange(category, e.target.value)}
+                    value={categoryPercentages?.[category]?.toFixed(2)}
+                    onChange={(e) => handlePercentageChange(category, e?.target?.value)}
                     className="w-20 p-1 text-center border rounded" />
                 </div>
               </div>
@@ -168,25 +168,25 @@ const MyBudget = () => {
           <div className="space-y-6">
             <div className="text-center bg-white p-4 rounded-lg shadow">
               <h3 className="text-2xl font-bold text-[#4c1a36]">
-                Total Monthly Budget: ৳{monthlyTotal.toFixed(2)}
+                Total Monthly Budget: ৳{monthlyTotal?.toFixed(2)}
               </h3>
             </div>
 
-            {categories.map(category => (
+            {categories?.map(category => (
               <motion.div key={category} whileHover={{ scale: 1.02 }} className="bg-white p-4 rounded-lg shadow">
                 <h5 className="text-lg font-semibold text-[#4c1a36] mb-2">{category}</h5>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="p-2 bg-gray-100 rounded">
                     <p className="text-sm text-gray-600">Monthly</p>
-                    <p className="font-bold">৳{(budgetData.monthly[category] || 0).toFixed(2)}</p>
+                    <p className="font-bold">৳{(budgetData?.monthly?.[category] || 0)?.toFixed(2)}</p>
                   </div>
                   <div className="p-2 bg-gray-100 rounded">
                     <p className="text-sm text-gray-600">Daily Limit</p>
-                    <p className="font-bold">৳{(budgetData.daily[category] || 0).toFixed(2)}</p>
+                    <p className="font-bold">৳{(budgetData?.daily?.[category] || 0)?.toFixed(2)}</p>
                   </div>
                   <div className="p-2 bg-gray-100 rounded">
                     <p className="text-sm text-gray-600">Weekly Limit</p>
-                    <p className="font-bold">৳{(budgetData.weekly[category] || 0).toFixed(2)}</p>
+                    <p className="font-bold">৳{(budgetData?.weekly?.[category] || 0)?.toFixed(2)}</p>
                   </div>
                 </div>
               </motion.div>
