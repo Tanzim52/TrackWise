@@ -1,48 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "animate.css";
 import { motion } from "framer-motion";
 import { FaEdit, FaSave, FaMoneyBillWave } from "react-icons/fa";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import axios from "axios";
 
-const categories = ["Food", "Transport", "Entertainment", "Shopping", "Others"];
+const categories = ["Food", "Transport", "Entertainment", "Bills", "Savings", "Others"];
 
 const MyBudget = () => {
-  const [budget, setBudget] = useState({
-    daily: {},
-    weekly: {},
-    monthly: {},
-  });
-
-  const [formBudget, setFormBudget] = useState({
-    daily: {},
-    weekly: {},
-    monthly: {},
-  });
-
-  const [editing, setEditing] = useState({
-    daily: false,
-    weekly: false,
-    monthly: false,
-  });
+  const { user } = useContext(AuthContext);
+  const [budget, setBudget] = useState({ daily: {}, weekly: {}, monthly: {} });
+  console.log(budget);
+  const [formBudget, setFormBudget] = useState({ daily: {}, weekly: {}, monthly: {} });
+  const [editing, setEditing] = useState({ daily: false, weekly: false, monthly: false });
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
-  }, []);
+    fetchBudget();
+  }, [user?.email]);  // Added user email as a dependency to refetch on email change
+
+  const fetchBudget = async () => {
+    try {
+      // Send the request with user email as a parameter to filter the budget data on the backend
+      const response = await axios.get("http://localhost:5000/budget", {
+        params: { email: user?.email },  // Filter by email directly here
+      });
+      
+      // Assuming the backend returns the correct data filtered by the email
+      const userBudget = response.data || { daily: {}, weekly: {}, monthly: {} };
+      setBudget(userBudget);
+      setFormBudget(userBudget);
+    } catch (error) {
+      console.error("Error fetching budget:", error);
+    }
+  };
 
   const handleInputChange = (e, type, category) => {
-    setFormBudget({
-      ...formBudget,
-      [type]: { ...formBudget[type], [category]: e.target.value },
-    });
+    setFormBudget((prev) => ({
+      ...prev,
+      [type]: { ...prev?.[type], [category]: e.target.value },
+    }));
   };
 
-  const handleSubmit = (type) => {
-    setBudget((prev) => ({ ...prev, [type]: formBudget[type] }));
-    setEditing((prev) => ({ ...prev, [type]: false }));
+  const handleSubmit = async (type) => {
+    try {
+      const budgetData = {
+        email: user?.email,
+        [type]: formBudget?.[type],
+      };
+  
+      await axios.post("http://localhost:5000/budget", budgetData);
+  
+      // Fetch updated budget from the backend immediately after saving
+      fetchBudget();
+  
+      setEditing((prev) => ({ ...prev, [type]: false }));
+    } catch (error) {
+      console.error("Error saving budget:", error);
+    }
   };
+  
 
   const handleEdit = (type) => {
+    setFormBudget((prev) => ({
+      ...prev,
+      [type]: { ...budget?.[type] },
+    }));
     setEditing((prev) => ({ ...prev, [type]: true }));
   };
 
@@ -58,7 +83,7 @@ const MyBudget = () => {
       </motion.h2>
 
       <motion.div className="max-w-3xl mx-auto mt-10 space-y-8">
-        {["daily", "weekly", "monthly"].map((type) => (
+        {["daily", "weekly", "monthly"]?.map((type) => (
           <motion.div
             key={type}
             className="bg-[#fefdec] text-[#4c1a36] p-6 rounded-lg shadow-lg"
@@ -69,7 +94,7 @@ const MyBudget = () => {
               {type} Budget
             </h4>
 
-            {editing[type] ? (
+            {editing?.[type] ? (
               <div className="mt-4">
                 {categories.map((category) => (
                   <div key={category} className="mb-4">
@@ -81,7 +106,7 @@ const MyBudget = () => {
                       <input
                         type="number"
                         name={`${type}-${category}`}
-                        value={formBudget[type][category] || ""}
+                        value={formBudget?.[type]?.[category] || ""}
                         onChange={(e) => handleInputChange(e, type, category)}
                         required
                         className="w-full p-2 outline-none"
@@ -105,7 +130,7 @@ const MyBudget = () => {
                   >
                     <span className="font-semibold capitalize">{category}:</span>
                     <span className="text-lg font-bold text-[#395c6b]">
-                      ৳{budget[type][category] || 0}
+                      ৳{budget?.[type]?.[category] || 0}
                     </span>
                   </motion.div>
                 ))}
