@@ -44,7 +44,7 @@ const NavBar = () => {
                         {links}
                     </ul>
                 </div>
-                <Link to="/" className="btn btn-ghost text-xl">daisyUI</Link>
+                <Link to="/" className="btn btn-ghost text-xl">TrackWise</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -53,9 +53,9 @@ const NavBar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    user?.email ? (<a onClick={handleLogout} className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>Logout</p></a>)
+                    user?.email ? (<a onClick={handleLogout} className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>SignOut</p></a>)
                     :
-                    <Link to="signin" className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>Login</p></Link>
+                    <Link to="signin" className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>SignIn</p></Link>
                 }
             </div>
         </div>

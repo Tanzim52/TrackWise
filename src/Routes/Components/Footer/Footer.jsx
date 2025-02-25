@@ -2,7 +2,7 @@ import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="footer flex flex-col items-center bg-base-200 text-base-content p-10 rounded">
+    <footer className="footer flex flex-col  items-center bg-[#4c1a36] text-[#fefdec] p-10 ">
       {/* Navigation Links */}
       <nav className="flex justify-center  items-center gap-6">
         <a href="/about" className="link link-hover">
