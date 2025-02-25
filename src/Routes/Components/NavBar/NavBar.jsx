@@ -22,8 +22,8 @@ const NavBar = () => {
 
     const links = <>
         <li> <Link to="dashboard" >Dashboard</Link> </li>
-        <li> <Link to="reminders" >Reminders</Link> </li>
-        <li> <Link to="expenses" >Expenses</Link> </li>
+        <li> <Link to="about-us" >About Us</Link> </li>
+        <li> <Link to="expenses" >Contact Us</Link> </li>
     </>
 
 
