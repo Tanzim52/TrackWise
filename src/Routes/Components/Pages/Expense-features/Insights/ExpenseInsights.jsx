@@ -1,44 +1,46 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import axios from 'axios';
 import * as tf from '@tensorflow/tfjs';
-import { PieChart, Pie, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
+import {
+    PieChart, Pie, LineChart, Line, RadarChart, Radar,
+    XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell,
+    ResponsiveContainer, PolarGrid, PolarAngleAxis, PolarRadiusAxis
+} from 'recharts';
+import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
+import axios from 'axios';
+import AIFeedbacks from './AIFeedback/AIFeedbacks';
+
+const COLORS = ['#4c1a36', '#dfab81', '#395c6b', '#7a9e7e', '#f4e3b1', '#a85751'];
 
 const ExpenseInsights = () => {
-    const {user} = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
     const [expenses, setExpenses] = useState([]);
     const [budget, setBudget] = useState(null);
-    console.log(budget)
-    const [aiInsights, setAiInsights] = useState('');
+    const [insights, setInsights] = useState({});
     const [alerts, setAlerts] = useState([]);
     const [model, setModel] = useState(null);
-    const [trainingProgress, setTrainingProgress] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [trainingProgress, setTrainingProgress] = useState(0);
 
-    // TensorFlow.js Model Configuration
+    // Enhanced TensorFlow Model
     const createModel = useCallback(() => {
         const model = tf.sequential({
             layers: [
                 tf.layers.dense({
-                    inputShape: [6],
-                    units: 32,
+                    inputShape: [7],
+                    units: 128,
                     activation: 'relu',
                     kernelInitializer: 'heNormal'
                 }),
-                tf.layers.dropout({ rate: 0.2 }),
-                tf.layers.dense({
-                    units: 16,
-                    activation: 'relu'
-                }),
-                tf.layers.dense({
-                    units: 3,
-                    activation: 'softmax'
-                })
+                tf.layers.dropout({ rate: 0.4 }),
+                tf.layers.dense({ units: 64, activation: 'relu' }),
+                tf.layers.dense({ units: 32, activation: 'relu' }),
+                tf.layers.dense({ units: 3, activation: 'softmax' })
             ]
         });
 
         model.compile({
-            optimizer: tf.train.adam(0.001),
+            optimizer: tf.train.adam(0.0005),
             loss: 'categoricalCrossentropy',
             metrics: ['accuracy']
         });
@@ -46,296 +48,316 @@ const ExpenseInsights = () => {
         return model;
     }, []);
 
-    // Load TF.js model on mount
-    useEffect(() => {
-        const loadModel = async () => {
-            const newModel = createModel();
-            setModel(newModel);
-        };
-        loadModel();
-    }, [createModel]);
-
-    // Fetch expense and budget data
+    // Fetch data with error handling
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [expensesRes, budgetRes] = await Promise.all([
-                    axios.get('http://localhost:5000/expenses'),
-                    axios.get('http://localhost:5000/budget', {
-                        params: { email: user?.email } // Ensure user.email is defined
-                    })
+                    axios.get('http://localhost:5000/expenses', { params: { email: user?.email } }),
+                    axios.get('http://localhost:5000/budget', { params: { email: user?.email } })
                 ]);
-                setExpenses(expensesRes?.data ?? []);
-                setBudget(budgetRes?.data ?? null);
+
+                setExpenses(expensesRes.data);
+                setBudget(budgetRes.data);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Data fetch error:', error);
                 setLoading(false);
             }
         };
-        
-        fetchData();
-    }, []);
 
-// Prepare data for TensorFlow.js
-const prepareData = useCallback(() => {
-    if (!expenses?.length || !budget) return null;
+        user?.email && fetchData();
+    }, [user?.email]);
 
-    const categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Others', 'Savings'];
-    
-    // Fix: Properly handle maxAmount with a valid fallback
-    const maxAmount = Math.max(1, ...expenses.map(e => parseFloat(e?.amount ?? 0)));
+    // Fixed data preparation
+    const prepareData = useCallback(() => {
+        if (!expenses.length || !budget) return null;
 
-    return expenses.map(expense => {
-        const date = new Date(expense?.dateTime);
-        const label = parseFloat(expense?.amount ?? 0) > (budget?.monthly?.[expense?.category] ?? 0) ? 0 : 
-                      parseFloat(expense?.amount ?? 0) > ((budget?.monthly?.[expense?.category] ?? 0) * 0.7) ? 1 : 2;
+        const monthlyTotal = Object.values(budget.monthly).reduce((a, b) => a + b, 0);
+        const maxAmount = Math.max(...expenses.map(e => parseFloat(e.amount)), 1);
 
-        // Debugging: Log each expense and its label
-        console.log('Expense:', expense, 'Label:', label);
+        return expenses.map(expense => {
+            const budgetLimit = budget.monthly[expense.category] || 1;
+            const spendingRatio = parseFloat(expense.amount) / budgetLimit;
+            const expenseDate = new Date(expense.dateTime);
 
-        return {
-            features: [
-                parseFloat(expense?.amount ?? 0) / maxAmount,
-                date?.getMonth() / 11,
-                date?.getDate() / 31,
-                categories.indexOf(expense?.category) / categories?.length,
-                parseFloat(expense?.amount ?? 0) / (budget?.monthly?.[expense?.category] ?? 1),
-                Object.values(budget?.monthly ?? {}).reduce((a, b) => a + parseFloat(b ?? 0), 0) / 1000000
-            ],
-            label: label
-        };
-    });
-}, [expenses, budget]);
+            return {
+                features: [
+                    spendingRatio,
+                    (expenseDate.getDate() / 31) * 2 - 1,
+                    Math.cos((expenseDate.getMonth() * 2 * Math.PI) / 12),
+                    parseFloat(expense.amount) / monthlyTotal,
+                    Object.keys(budget.monthly).indexOf(expense.category) / Object.keys(budget.monthly).length,
+                    (budget.monthlyTotal || 0) / 100000,
+                    Math.log10(parseFloat(expense.amount) + 1)
+                ],
+                label: spendingRatio > 1 ? 0 : spendingRatio > 0.8 ? 1 : 2
+            };
+        });
+    }, [expenses, budget]);
 
+    // Fixed TensorFlow analysis
+    const analyzeSpending = useCallback(async () => {
+        if (!model) return;
 
-    // Train model and generate insights
-    const analyzeWithAI = useCallback(async () => {
-        if (!model || !expenses?.length || !budget) return;
-    
-        const preparedData = prepareData();
-        if (!preparedData) return;
-    
-        // Debugging: Log preparedData and labels
-        console.log('Prepared Data:', preparedData);
-        const labelValues = preparedData.map(d => d?.label ?? 0);
-        console.log('Label Values:', labelValues);
-    
-        // Validate label values
-        if (!labelValues.every(value => [0, 1, 2].includes(value))) {
-            console.error('Invalid label values detected:', labelValues);
+        const trainingData = prepareData();
+        if (!trainingData || trainingData.length < 10) {
+            console.warn('Insufficient data for analysis');
             return;
         }
-    
-        const features = tf.tensor2d(preparedData.map(d => d?.features ?? []));
-        const labels = tf.oneHot(tf.tensor1d(labelValues, 'int32'), 3);
-    
+
+        const features = tf.tensor2d(trainingData.map(d => d.features));
+        const labels = tf.oneHot(
+            tf.tensor1d(trainingData.map(d => d.label), 'int32'),
+            3
+        );
+
         await model.fit(features, labels, {
             epochs: 100,
             batchSize: 32,
-            validationSplit: 0.2,
+            validationSplit: 0.25,
             callbacks: {
-                onEpochEnd: async (epoch, logs) => {
+                onEpochEnd: (epoch, logs) => {
                     setTrainingProgress((epoch + 1) / 100);
-                    console.log(`Epoch ${epoch + 1}: Loss - ${logs?.loss?.toFixed(4)}, Acc - ${logs?.acc?.toFixed(4)}`);
+                    tf.nextFrame();
                 }
             }
         });
-    
-        // Generate predictions
+
         const predictions = model.predict(features);
-        const predictionData = await predictions.array();
-    
-        // Create insights
-        const categoryAnalysis = {};
-        preparedData.forEach((_, index) => {
-            const category = expenses?.[index]?.category;
-            if (!categoryAnalysis?.[category]) {
-                categoryAnalysis[category] = {
+        const predData = await predictions.array();
+
+        const analysis = expenses.reduce((acc, expense, index) => {
+            const category = expense.category;
+            if (!acc[category]) {
+                acc[category] = {
                     total: 0,
-                    over: 0,
-                    count: 0
+                    budget: budget.monthly[category] || 0,
+                    risk: 0,
+                    transactions: [],
+                    predictionHistory: []
                 };
             }
-            categoryAnalysis[category].total += expenses?.[index]?.amount ?? 0;
-            categoryAnalysis[category].over += predictionData?.[index]?.[0] ?? 0;
-            categoryAnalysis[category].count++;
-        });
-    
-        const insights = Object.entries(categoryAnalysis).map(([category, data]) => {
-            const risk = (data?.over / data?.count) * 100;
-            const avgSpend = data?.total / data?.count;
-            const budgetLimit = budget?.monthly?.[category] ?? 0;
-            
-            return `• ${category}: ${risk?.toFixed(1)}% overspend risk
-       Avg: $${avgSpend?.toFixed(2)} vs Budget: $${budgetLimit}
-       ${risk > 50 ? '⚠️ Consider reducing expenses' : '✅ Within safe limits'}`;
-        }).join('\n\n');
-    
-        setAiInsights(`AI-Powered Budget Analysis:\n\n${insights}`);
-        tf.dispose([features, labels, predictions]);
-    
-    }, [model, expenses, budget, prepareData]);
 
+            acc[category].total += parseFloat(expense.amount);
+            acc[category].risk += predData[index][0];
+            acc[category].transactions.push(expense);
+            acc[category].predictionHistory.push(predData[index][0]);
 
-
-    // Budget comparison logic
-    const checkBudget = useCallback(() => {
-        if (!budget) return;
-
-        const newAlerts = [];
-        const monthlySpending = expenses.reduce((acc, expense) => {
-            acc[expense?.category] = (acc[expense?.category] ?? 0) + parseFloat(expense?.amount ?? 0);
             return acc;
         }, {});
 
-        Object.entries(monthlySpending).forEach(([category, amount]) => {
-            const budgetLimit = budget?.monthly?.[category];
-            if (budgetLimit && amount > budgetLimit) {
-                newAlerts.push(`Overspent ${category}: $${amount} vs $${budgetLimit}`);
-            }
-        });
+        const newAlerts = Object.entries(analysis)
+            .filter(([_, data]) => (data.risk / data.transactions.length) > 0.5)
+            .map(([category, data]) => ({
+                category,
+                severity: (data.risk / data.transactions.length) * 100,
+                message: `${category} exceeding ${((data.total / data.budget) * 100).toFixed(1)}% of budget`
+            }));
 
         setAlerts(newAlerts);
-    }, [expenses, budget]);
+        setInsights(analysis);
+        tf.dispose([features, labels, predictions]);
+    }, [model, expenses, budget, prepareData]);
 
     useEffect(() => {
-        if (!loading && model && expenses?.length && budget) {
-            analyzeWithAI();
-            checkBudget();
-        }
-    }, [loading, model, expenses, budget, analyzeWithAI, checkBudget]);
+        if (!loading && !model) setModel(createModel());
+    }, [loading, createModel, model]);
 
-    // Chart configuration
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
-    const processCategoryData = () => {
-        return expenses.reduce((acc, expense) => {
-            acc[expense?.category] = (acc[expense?.category] ?? 0) + parseFloat(expense?.amount ?? 0);
-            return acc;
-        }, {});
+    useEffect(() => {
+        if (model && !loading) analyzeSpending();
+    }, [model, loading, analyzeSpending]);
+
+    // Visualization helpers
+    const processChartData = () => {
+        return Object.entries(insights).map(([category, data]) => ({
+            category,
+            spent: data.total,
+            budget: data.budget,
+            risk: (data.risk / data.transactions.length) * 100
+        }));
     };
 
-    if (loading) {
-        return <div className="p-4 ml-20">Loading financial insights...</div>;
-    }
+    const getCategoryAdvice = (categoryData) => {
+        const spentPercent = (categoryData.total / categoryData.budget) * 100;
+        if (spentPercent > 100) return 'Immediate spending freeze needed';
+        if (spentPercent > 75) return 'Consider reducing expenses';
+        if (spentPercent > 50) return 'Monitor spending closely';
+        return 'Within safe limits';
+    };
+
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
+        const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
+
+        return (
+            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                {`${(percent * 100).toFixed(0)}%`}
+            </text>
+        );
+    };
+
+    if (loading) return (
+        <div className="min-h-screen bg-[#fefdec] flex items-center justify-center">
+            <div className="text-4xl text-[#4c1a36]">
+                <span className="loading loading-dots loading-lg"></span>
+            </div>
+        </div>
+    );
 
     return (
-        <div className="p-4 ml-20">
-            {/* AI Insights Section */}
-            <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-                <h2 className="text-xl font-bold mb-4">🤖 AI Budget Analysis</h2>
-                <div className="bg-white p-4 rounded-md whitespace-pre-line">
-                    {trainingProgress < 1 ? (
-                        <div className="flex items-center">
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                <div 
-                                    className="bg-blue-600 h-2.5 rounded-full" 
-                                    style={{ width: `${trainingProgress * 100}%` }}
-                                ></div>
-                            </div>
-                            <span className="ml-2">{(trainingProgress * 100)?.toFixed(0)}%</span>
-                        </div>
-                    ) : (
-                        aiInsights || "Analyzing spending patterns..."
-                    )}
-                </div>
-            </div>
+        <div className="min-h-screen bg-[#fefdec] p-8">
+            <div className="max-w-7xl mx-auto space-y-12">
+                <h1 className="text-4xl font-bold text-[#4c1a36] mb-8">
+                    🧠 AI-Powered Financial Insights
+                </h1>
 
-            {/* Alerts Section */}
-            {alerts?.length > 0 && (
-                <div className="mb-8 p-4 bg-red-50 rounded-lg">
-                    <h3 className="text-lg font-bold mb-2">🚨 Budget Alerts</h3>
-                    {alerts.map((alert, i) => (
-                        <p key={i} className="text-red-600">• {alert}</p>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="bg-white p-6 rounded-2xl shadow-2xl">
+                        <h2 className="text-2xl font-bold text-[#4c1a36] mb-6">Risk Analysis</h2>
+                        <ResponsiveContainer width="100%" height={400}>
+                            <RadarChart data={processChartData()}>
+                                <PolarGrid />
+                                <PolarAngleAxis dataKey="category" />
+                                <PolarRadiusAxis />
+                                <Radar
+                                    name="Spending Risk"
+                                    dataKey="risk"
+                                    stroke="#4c1a36"
+                                    fill="#dfab81"
+                                    fillOpacity={0.6}
+                                />
+                                <Tooltip />
+                                <Legend />
+                            </RadarChart>
+                        </ResponsiveContainer>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-2xl shadow-2xl">
+                        <h2 className="text-2xl font-bold text-[#4c1a36] mb-6">Spending Distribution</h2>
+                        <ResponsiveContainer width="100%" height={400}>
+                            <PieChart>
+                                <Pie
+                                    data={processChartData()}
+                                    dataKey="spent"
+                                    nameKey="category"
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={60}
+                                    outerRadius={110}
+                                    paddingAngle={5}
+                                    label={renderCustomizedLabel}
+                                    labelLine={false}
+                                >
+                                    {processChartData().map((entry, index) => (
+                                        <Cell
+                                            key={index}
+                                            fill={COLORS[index % COLORS.length]}
+                                            stroke="#ffffff"
+                                            strokeWidth={2}
+                                        />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{
+                                        background: '#ffffffdd',
+                                        borderRadius: '12px',
+                                        boxShadow: '0 4px 20px #00000022'
+                                    }}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {Object.entries(insights).map(([category, data], index) => (
+                        <div key={category} className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                            <div className="flex justify-between items-start mb-4">
+                                <h3 className="text-xl font-semibold text-[#4c1a36]">{category}</h3>
+                                <div className="text-right">
+                                    <p className={`text-sm ${data.total > data.budget ? 'text-red-600' : 'text-green-600'}`}>
+                                        {((data.total / data.budget) * 100).toFixed(1)}% Used
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        {getCategoryAdvice(data)}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <Sparklines data={data.predictionHistory} width={200} height={40}>
+                                <SparklinesLine
+                                    color={COLORS[index % COLORS.length]}
+                                    style={{ strokeWidth: 2 }}
+                                />
+                            </Sparklines>
+
+                            <div className="mt-4 space-y-2">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-gray-600">Spent/Budget:</span>
+                                    <span className="font-semibold">
+                                        ৳{data.total.toFixed(2)} / ৳{data.budget.toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-gray-600">Daily Average:</span>
+                                    <span className="font-semibold">
+                                        ৳{(data.total / 30).toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-gray-600">Risk Level:</span>
+                                    <span className={`badge ${data.risk > 50 ? 'badge-error' : 'badge-success'}`}>
+                                        {(data.risk / data.transactions.length).toFixed(1)}%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     ))}
                 </div>
-            )}
 
-            {/* Visualization Section */}
-            <div className="mb-8">
-                <h2 className="text-xl font-bold mb-4">📊 Financial Overview</h2>
-                
-                {/* Pie Chart */}
-                <div className="mb-8 p-4 bg-white rounded-lg">
-                    <h3 className="font-semibold mb-2">Spending Distribution</h3>
-                    <PieChart width={600} height={400}>
-                        <Pie
-                            data={Object.entries(processCategoryData()).map(([name, value]) => ({ name, value }))}
-                            dataKey="value"
-                            nameKey="name"
-                            label
-                        >
-                            {Object.entries(processCategoryData()).map((_, index) => (
-                                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip formatter={(value) => `$${value?.toFixed(2)}`} />
-                        <Legend />
-                    </PieChart>
+
+
+
+
+
+
+                <div>
+                    <AIFeedbacks insights={insights} budget={budget} />
                 </div>
 
-                {/* Bar Chart */}
-                <div className="mb-8 p-4 bg-white rounded-lg">
-                    <h3 className="font-semibold mb-2">Monthly Spending Trends</h3>
-                    <BarChart width={800} height={400} data={expenses}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis 
-                            dataKey="dateTime" 
-                            tickFormatter={(str) => new Date(str)?.toLocaleDateString()}
-                        />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="amount" fill="#8884d8" />
-                    </BarChart>
-                </div>
 
-                {/* Budget Progress */}
-                <div className="p-4 bg-white rounded-lg">
-                    <h3 className="font-semibold mb-2">Budget vs Actual</h3>
-                    <LineChart width={800} height={400} data={expenses}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis 
-                            dataKey="dateTime" 
-                            tickFormatter={(str) => new Date(str)?.toLocaleDateString()}
-                        />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line 
-                            type="monotone" 
-                            dataKey="amount" 
-                            stroke="#8884d8" 
-                            name="Actual Spending"
-                        />
-                        {budget && Object.keys(budget?.monthly ?? {}).map((category, index) => (
+
+
+
+
+
+
+
+
+
+
+
+                <div className="bg-white p-6 rounded-2xl shadow-2xl">
+                    <h2 className="text-2xl font-bold text-[#4c1a36] mb-6">Spending Timeline</h2>
+                    <ResponsiveContainer width="100%" height={400}>
+                        <LineChart data={expenses.map(e => ({ ...e, date: new Date(e.dateTime).toLocaleDateString() }))}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
                             <Line
-                                key={category}
                                 type="monotone"
-                                dataKey={() => budget?.monthly?.[category]}
-                                stroke={COLORS[(index + 1) % COLORS.length]}
-                                strokeDasharray="5 5"
-                                name={`${category} Budget`}
+                                dataKey="amount"
+                                stroke="#4c1a36"
+                                strokeWidth={2}
+                                dot={{ fill: '#dfab81', strokeWidth: 2 }}
                             />
-                        ))}
-                    </LineChart>
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
-            </div>
-
-            {/* Budget Controls */}
-            <div className="flex gap-4 mt-8">
-                <button
-                    onClick={() => window.location.href = '/my-budget'}
-                    className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
-                >
-                    Adjust Budget
-                </button>
-                <button
-                    onClick={analyzeWithAI}
-                    className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
-                >
-                    Refresh Analysis
-                </button>
             </div>
         </div>
     );
