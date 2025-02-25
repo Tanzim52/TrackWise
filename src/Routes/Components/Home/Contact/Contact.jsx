@@ -2,10 +2,11 @@ import { useState } from "react";
 import emailjs from "@emailjs/browser";
 import { FaEnvelope, FaPaperPlane } from "react-icons/fa";
 import Lottie from "lottie-react";
-import mail from "../../../../assets/Animation - 1740515645888.json"
+import mail from "../../../../assets/Animation - 1740515645888.json";
 
 const Contact = () => {
     const [formData, setFormData] = useState({
+        name: "",          // Added name field
         email: "",
         message: "",
     });
@@ -30,7 +31,7 @@ const Contact = () => {
             .then(
                 () => {
                     setStatus("Message sent successfully!");
-                    setFormData({ email: "", message: "" });
+                    setFormData({ name: "", email: "", message: "" }); // Reset all fields
                 },
                 (error) => {
                     setStatus("Failed to send message. Try again later.");
@@ -54,12 +55,25 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="flex justify-center items-center gap-8">
                 <div>
-                    <Lottie animationData={mail} className="w-lg "></Lottie>
+                    <Lottie animationData={mail} className="w-lg" />
                 </div>
-                <div className="w-full max-w-lg p-6 border-2 border-[#dfab81] rounded-lg shadow-lg bg-white">
+                <div className="w-full max-w-lg p-8 border-2 border-[#dfab81] rounded-lg shadow-lg bg-white"> {/* Increased padding */}
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                        {/* Name Input */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Your Name" // Added placeholder for name
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                className="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
+                            />
+                        </div>
+
                         {/* Email Input */}
-                        <div className="relative ">
+                        <div className="relative">
                             <FaEnvelope className="absolute left-3 top-3 text-[#395c6b]" />
                             <input
                                 type="email"
