@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const HF_API_KEY = import.meta.env.REACT_APP_HF_API_KEY;
+const HF_API_KEY = "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";
 
 const COLORS = ['#4c1a36', '#dfab81', '#395c6b', '#7a9e7e', '#f4e3b1', '#a85751'];
 
