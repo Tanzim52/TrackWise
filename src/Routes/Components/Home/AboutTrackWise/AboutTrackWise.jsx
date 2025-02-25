@@ -23,7 +23,7 @@ const TrackWiseFeatures = () => {
     }, []);
 
     return (
-        <div className="bg-gradient-to-r -mt-2 from-[#4c1a36] to-[#395c6b] text-white py-16 px-8 md:px-20">
+        <div className="bg-gradient-to-b -mt-2 from-[#4c1a36] to-[#fefdec] text-white py-16 px-8 md:px-20">
             <motion.h2
                 className="text-center text-4xl font-bold animate__animated animate__fadeInUp"
                 initial={{ opacity: 0, y: -50 }}

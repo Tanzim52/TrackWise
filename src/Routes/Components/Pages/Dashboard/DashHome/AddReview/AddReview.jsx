@@ -45,9 +45,9 @@ const ReviewForm = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Write a Review</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Give Us a Review</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
+        {/* <input
           type="text"
           name="title"
           placeholder="Review Title"
@@ -55,7 +55,7 @@ const ReviewForm = () => {
           onChange={handleChange}
           required
           className="w-full p-3 border rounded-lg"
-        />
+        /> */}
         <textarea
           name="description"
           placeholder="Your Review"
