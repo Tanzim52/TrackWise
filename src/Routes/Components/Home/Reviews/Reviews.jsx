@@ -50,13 +50,15 @@ const Reviews = () => {
                                 {[0, 1].map((offset) => {
                                     const reviewIndex = (index + offset) % reviews.length;
                                     return (
-                                        <div key={reviews[reviewIndex]?._id} className="border p-4 rounded-lg shadow-lg bg-white text-center w-full max-w-sm mx-auto">
-                                            <div className="flex flex-col items-center">
+                                        <div key={reviews[reviewIndex]?._id} className=" border-2 border-[#674d26] p-4 rounded-lg shadow-lg bg-cyan-50 text-center w-full max-w-sm mx-auto">
+                                            <div className="flex flex-col items-center  ">
+                                                <div className="border-2 rounded-full p-1 border-[#674d26] mb-3">
                                                 <img
                                                     src={reviews[reviewIndex]?.photoURL}
                                                     alt={reviews[reviewIndex]?.displayName}
-                                                    className="w-20 h-20 rounded-full object-cover mb-3"
+                                                    className="w-20 h-20 rounded-full object-cover "
                                                 />
+                                                </div>
                                                 <h3 className="font-semibold text-lg">{reviews[reviewIndex]?.displayName}</h3>
                                             </div>
                                             <p className="text-gray-600 mt-2 text-sm max-h-20 overflow-y-auto break-words">

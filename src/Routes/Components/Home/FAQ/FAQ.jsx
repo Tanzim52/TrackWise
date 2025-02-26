@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaQuestionCircle } from "react-icons/fa";
 
@@ -16,12 +16,12 @@ const faqData = [
     answer: "Our AI analyzes your spending patterns and provides smart insights to help you save money and stay on track."
   },
   {
-    question: "Can I access TrackWise on mobile?",
-    answer: "Absolutely! TrackWise is fully responsive and works smoothly on mobile, tablets, and desktops."
+    question: "Can I get alerts for due dates and overspending?",
+    answer: "Absolutely! TrackWise sends you notifications for tasks you set reminder on."
   },
   {
     question: "Is TrackWise free to use?",
-    answer: "Yes, TrackWise offers a free plan with core features. However, premium plans provide advanced insights and extra tools."
+    answer: "Yes, TrackWise is a totally free of cost platform designed just for students needs."
   }
 ];
 

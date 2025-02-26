@@ -72,7 +72,7 @@ const Contact = () => {
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
-                                className="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
+                                className="p-3 w-full border rounded-md bg-[#fefdec] focus:outline-none focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
                             />
                         </div>
 
@@ -86,7 +86,7 @@ const Contact = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                className="pl-10 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
+                                className="pl-10 p-3 w-full border rounded-md focus:outline-none bg-[#fefdec] focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
                             />
                         </div>
 
@@ -97,7 +97,7 @@ const Contact = () => {
                             value={formData.message}
                             onChange={handleChange}
                             required
-                            className="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
+                            className="p-3 w-full border rounded-md focus:outline-none bg-[#fefdec] focus:ring-2 focus:ring-[#dfab81] text-[#4c1a36]"
                             rows="5"
                         />
 

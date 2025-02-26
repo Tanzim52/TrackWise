@@ -44,7 +44,9 @@ const NavBar = ({ scrollToSection }) => {
                         {links}
                     </ul>
                 </div>
-                <Link to="/" className="btn btn-ghost text-xl">TrackWise</Link>
+                <Link to="/" className=" flex items-center text-xl"><img className="h-10" src="https://i.ibb.co.com/7th4bsjY/round-fav-icon-for-website-trackwise-removebg-preview.png" alt="" />
+                <p>TrackWise</p>
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -53,7 +55,7 @@ const NavBar = ({ scrollToSection }) => {
             </div>
             <div className="navbar-end">
                 {
-                    user?.email ? (<a onClick={handleLogout} className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>SignOut</p></a>)
+                    user?.email ? (<a onClick={handleLogout} className="btn bg-[#fefdec] flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>SignOut</p></a>)
                     :
                     <Link to="signin" className="btn flex items-center justify-center"><MdLogout className="text-lg"></MdLogout> <p>SignIn</p></Link>
                 }
