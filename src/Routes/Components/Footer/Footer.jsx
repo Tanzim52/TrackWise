@@ -25,13 +25,13 @@ const Footer = () => {
                     <div className="flex flex-col items-center md:items-end">
                         <h6 className="text-lg font-semibold text-[#dfab81] mb-2">Follow Us</h6>
                         <div className="flex gap-4">
-                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.facebook.com/share/1ANGpUMCLp/" target="_blank" rel="noopener noreferrer">
                                 <FaFacebookF className="text-2xl transition transform hover:scale-110 hover:text-[#dfab81]" />
                             </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.linkedin.com/in/tanzim52/" target="_blank" rel="noopener noreferrer">
                                 <FaLinkedinIn className="text-2xl transition transform hover:scale-110 hover:text-[#dfab81]" />
                             </a>
-                            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                            <a href="https://github.com/Tanzim52" target="_blank" rel="noopener noreferrer">
                                 <FaGithub className="text-2xl transition transform hover:scale-110 hover:text-[#dfab81]" />
                             </a>
                         </div>
