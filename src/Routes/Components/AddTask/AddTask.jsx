@@ -135,7 +135,7 @@ const AddTask = () => {
 
         {/* Submit Button */}
         <motion.button type="submit" className="w-full bg-[#4c1a36] text-white py-2 rounded-md font-semibold hover:bg-[#dfab81] transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
-          Add Task 🚀
+          Add Task
         </motion.button>
       </form>
     </motion.div>

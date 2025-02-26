@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import app from "../Firebase/firebase.init"; // ✅ Ensure correct import path
 
+
 export const AuthContext = createContext();
 const auth = getAuth(app); // ✅ Ensure `app` is properly initialized
 
@@ -41,7 +42,14 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={value}>
-            {loading ? <p>Loading...</p> : children} {/* ✅ Optional loading handling */}
+            {loading ? <div>
+                <p className="flex items-center space-x-2 text-xl font-semibold text-gray-700">
+                    <span className="w-6 h-6 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></span>
+                    <span>Loading...</span>
+                </p>
+
+            </div>
+                : children} {/* ✅ Optional loading handling */}
         </AuthContext.Provider>
     );
 };

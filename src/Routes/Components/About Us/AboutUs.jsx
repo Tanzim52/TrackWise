@@ -1,4 +1,4 @@
-import { FaLinkedin, FaGithub, FaGlobe } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaGlobe, FaExternalLinkAlt } from "react-icons/fa";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
@@ -10,18 +10,18 @@ const teamMembers = [
         description: "Fresher still passionate & skilled Front-end focused MERN Stack Developer.A bit of a perfectionist,minimalist & a game rat.",
         education: "B.Sc. in Computer Science & Engineering (NeU,2023 - present)",
         photo: "https://i.ibb.co.com/YFHb2gXV/Picsart-25-02-05-04-24-09-049.jpg",
-        linkedin: "https://linkedin.com/in/johndoe",
-        github: "https://github.com/johndoe",
-        portfolio: "https://johndoe.com",
+        linkedin: "https://www.linkedin.com/in/tanzim52/",
+        github: "https://github.com/Tanzim52",
+        portfolio: "https://tanzim-4055a.firebaseapp.com/",
     },
     {
         name: "Muhammad Abdullah Al Zubayer",
         description: "Skilled,creative & eager to learn Front-end focused MERN Stack Web Developer. Focused & a team player.",
         education: "B.Sc. in Computer Science & Engineering (NeU,2023 - present)",
         photo: "https://i.ibb.co.com/vxGfW8bF/nahin.jpg",
-        linkedin: "https://linkedin.com/in/janesmith",
-        github: "https://github.com/janesmith",
-        portfolio: "https://janesmith.com",
+        linkedin: "https://www.linkedin.com/in/zubayer123/",
+        github: "https://github.com/nahin440",
+        portfolio: "https://web-dev-zubayer.netlify.app/",
     },
     {
         name: "Md Mirajul Islam",
@@ -95,7 +95,7 @@ const AboutUs = () => {
                                     </a>
                                     <a href={member.portfolio} target="_blank" rel="noopener noreferrer"
                                         className="hover:opacity-75 transition-opacity">
-                                        <FaGlobe className="text-[#4c1a36] text-xl md:text-2xl" />
+                                        <FaExternalLinkAlt className="text-[#4c1a36] text-xl md:text-2xl" />
                                     </a>
                                 </div>
                             </div>
