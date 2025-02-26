@@ -3,7 +3,7 @@ import { MdLogout } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
-const NavBar = () => {
+const NavBar = ({ scrollToSection }) => {
 
 
     const navigate = useNavigate()
@@ -23,7 +23,7 @@ const NavBar = () => {
     const links = <>
         <li> <Link to="dashboard" >Dashboard</Link> </li>
         <li> <Link to="about-us" >About Us</Link> </li>
-        <li> <Link to="expenses" >Contact Us</Link> </li>
+        <li> <a onClick={() => scrollToSection('contact')}>Contact Us</a> </li>
     </>
 
 
