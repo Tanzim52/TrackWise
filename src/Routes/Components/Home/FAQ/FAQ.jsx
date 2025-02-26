@@ -33,7 +33,7 @@ const FAQ = () => {
   };
 
   return (
-    <section className="py-20 bg-[#fefdec]">
+    <section className="py-20 w-full bg-[#fefdec]">
       {/* Title Section */}
       <div className="text-center mb-10">
         <h2 className="text-5xl font-bold text-[#4c1a36] tracking-wide">FAQs</h2>
@@ -41,7 +41,7 @@ const FAQ = () => {
       </div>
 
       {/* FAQ Container */}
-      <div className="max-w-3xl mx-auto space-y-4">
+      <div className="w-9/12 mx-auto space-y-4">
         {faqData.map((faq, index) => (
           <motion.div
             key={index}
@@ -51,7 +51,7 @@ const FAQ = () => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <button
-              className="w-full flex items-center justify-between text-left text-[#4c1a36] font-semibold text-lg"
+              className="w-full flex items-center justify-between text-left text-[#4c1a36] font-semibold text-xl"
               onClick={() => toggleFAQ(index)}
             >
               <span className="flex items-center gap-2">
@@ -67,7 +67,7 @@ const FAQ = () => {
 
             {openIndex === index && (
               <motion.p
-                className="mt-3 text-[#395c6b] text-sm"
+                className="mt-3 text-[#395c6b] "
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 transition={{ duration: 0.3 }}

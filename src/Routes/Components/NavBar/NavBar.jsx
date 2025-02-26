@@ -32,7 +32,7 @@ const NavBar = ({ scrollToSection }) => {
 
 
     return (
-        <div className="navbar mainPrimary text-[#fefdec]  shadow-sm">
+        <div className="navbar md:px-28 mainPrimary text-[#fefdec]  shadow-sm">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

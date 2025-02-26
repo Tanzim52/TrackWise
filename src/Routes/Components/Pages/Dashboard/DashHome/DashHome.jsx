@@ -10,20 +10,24 @@ const DashHome = () => {
     return (
         <div className="space-y-8 px-10">
             {/* Welcome Section */}
-            <div className="bg-gray-100  flex gap-5 items-center justify-start p-6 rounded-lg shadow-sm">
+            <div className="  flex gap-5 items-center justify-start p-6 rounded-lg shadow-sm bg-gradient-to-r from-[#4c1a36] to-[#2d0f1f]" style={{
+                            
+                            color: "#fefdec",
+                            borderColor: "#fefdec"
+                        }}>
 
                 <div className='w-fit'>
                     <img
                         src={user?.photoURL || 'https://via.placeholder.com/150'}
                         alt="Profile"
-                        className="w-20 h-20 rounded-full object-cover border-2 border-[#212121] p-1"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-[#fefdec] p-1"
                     />
                 </div>
                 <div className=''>
-                    <h1 className="text-3xl font-bold text-gray-800">
+                    <h1 className="text-3xl font-bold ">
                         {user ? `Welcome back, ${user?.displayName || 'User'}! ` : 'Welcome to Dashboard!'}
                     </h1>
-                    <p className="text-gray-600 mt-2">
+                    <p className=" mt-2">
                         Manage your account and activities from this dashboard
                     </p>
                 </div>

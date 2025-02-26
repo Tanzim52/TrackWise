@@ -30,7 +30,7 @@ const TrackWiseFeatures = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
             >
-                🚀 Discover TrackWise: Your Ultimate Productivity Companion
+                Discover TrackWise: Your Ultimate Productivity Companion
             </motion.h2>
 
             <p className="text-center text-lg mt-4 text-[#dfab81] animate__animated animate__fadeIn animate__delay-1s">
@@ -65,7 +65,7 @@ const TrackWiseFeatures = () => {
                     to="/dashboard"
                     className="bg-[#dfab81] hover:bg-[#4c1a36] text-white px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 animate__animated animate__pulse animate__infinite"
                 >
-                    Start Using TrackWise Now 🚀
+                    Start Using TrackWise Now
                 </Link>
             </motion.div>
         </div>

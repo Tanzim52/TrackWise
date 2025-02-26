@@ -50,7 +50,7 @@ const AddTask = () => {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg animate__animated animate__fadeIn"
+      className="max-w-lg mx-auto my-16 p-6 bg-white shadow-lg rounded-lg border border-[#dfab81] animate__animated animate__fadeIn"
     >
       <h2 className="text-3xl font-bold mb-4 text-center animate__animated animate__zoomIn">
         Add New Task
@@ -63,19 +63,19 @@ const AddTask = () => {
         {/* Task Title */}
         <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
           <label className="block font-semibold">Task Title</label>
-          <input type="text" {...register("title", { required: true })} className="w-full px-3 py-2 border rounded-md" placeholder="Enter task title" />
+          <input type="text" {...register("title", { required: true })} className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] placeholder-[#4c1a36] bg-[#fefdec]" placeholder="Enter task title" />
         </motion.div>
 
         {/* Description */}
         <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }}>
           <label className="block font-semibold">Description</label>
-          <textarea {...register("description")} className="w-full px-3 py-2 border rounded-md" placeholder="Enter task details"></textarea>
+          <textarea {...register("description")} className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] placeholder-[#4c1a36] bg-[#fefdec]" placeholder="Enter task details"></textarea>
         </motion.div>
 
         {/* Category */}
         <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
           <label className="block font-semibold">Category</label>
-          <select {...register("category")} className="w-full px-3 py-2 border rounded-md">
+          <select {...register("category")} className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] placeholder-[#4c1a36] bg-[#fefdec]">
             <option value="Assignment">Assignment</option>
             <option value="Exam">Exam</option>
             <option value="Study Session">Study Session</option>
@@ -87,13 +87,13 @@ const AddTask = () => {
         {/* Due Date */}
         <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.5 }}>
           <label className="block font-semibold">Due Date</label>
-          <input type="date" {...register("dueDate", { required: true })} className="w-full px-3 py-2 border rounded-md" />
+          <input type="date" {...register("dueDate", { required: true })} className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] placeholder-[#4c1a36] bg-[#fefdec]" />
         </motion.div>
 
         {/* Priority Level */}
         <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
           <label className="block font-semibold">Priority Level</label>
-          <select {...register("priority")} className="w-full px-3 py-2 border rounded-md">
+          <select {...register("priority")} className="w-full pl-10 py-2 border border-[#dfab81] rounded-md focus:ring-2 focus:ring-[#4c1a36] text-[#4c1a36] placeholder-[#4c1a36] bg-[#fefdec]">
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
@@ -134,7 +134,7 @@ const AddTask = () => {
         </motion.div>
 
         {/* Submit Button */}
-        <motion.button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
+        <motion.button type="submit" className="w-full bg-[#4c1a36] text-white py-2 rounded-md font-semibold hover:bg-[#dfab81] transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
           Add Task 🚀
         </motion.button>
       </form>

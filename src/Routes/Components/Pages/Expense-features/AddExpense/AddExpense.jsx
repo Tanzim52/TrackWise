@@ -113,7 +113,7 @@ const AddExpense = () => {
                             type="text"
                             value={currentDateTime}
                             readOnly
-                            className="w-full pl-10 py-2 border border-[#dfab81] rounded-md bg-gray-200 text-gray-600 cursor-not-allowed"
+                            className="w-full pl-10 py-2 border border-[#dfab81] rounded-md bg-[#e6e6d7] text-gray-600 cursor-not-allowed"
                         />
                     </motion.div>
 

@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Reminders = () => {
@@ -23,10 +24,8 @@ const Reminders = () => {
     fetchTasks();
   }, [user?.email]);
 
-  // Function to format reminder time to 12-hour format with AM/PM
   const formatTime = (timeString) => {
     if (!timeString) return "Not Set";
-
     const date = new Date(`1970-01-01T${timeString}`);
     return date.toLocaleTimeString("en-US", {
       hour: "2-digit",
@@ -35,7 +34,6 @@ const Reminders = () => {
     });
   };
 
-  // Sorting function
   const sortTasks = (tasks, sortBy) => {
     return tasks.slice().sort((a, b) => {
       if (sortBy === "reminderTime") {
@@ -56,17 +54,30 @@ const Reminders = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      const res = await axios.put(`http://localhost:5000/tasks/${id}`, {
-        reminder: false,
-      });
-      
-      if (res.data.success) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axios.put(`http://localhost:5000/tasks/${id}`, {
+            reminder: false,
+          });
+
+          if (res.data.success) {
+            setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+            Swal.fire("Deleted!", "Your reminder has been deleted.", "success");
+          }
+        } catch (error) {
+          console.error("Error updating reminder status:", error);
+        }
       }
-    } catch (error) {
-      console.error("Error updating reminder status:", error);
-    }
+    });
   };
 
   const sortedTasks = sortTasks(tasks, sortBy);
@@ -74,8 +85,6 @@ const Reminders = () => {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h2 className="text-3xl font-bold mb-6 text-center">My Reminders</h2>
-
-      {/* Sorting Dropdown */}
       <div className="flex justify-end mb-4">
         <select
           value={sortBy}
@@ -87,8 +96,6 @@ const Reminders = () => {
           <option value="dueDate">Sort by Due Date</option>
         </select>
       </div>
-
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
@@ -107,16 +114,24 @@ const Reminders = () => {
                 <tr key={task._id}>
                   <td>{index + 1}</td>
                   <td className="font-medium">{task.title}</td>
-                  <td className="text-blue-600">
-                    {formatTime(task.reminderTime)}
-                  </td>
-                  <td className={`badge ${task.priority?.toLowerCase()}`}>
+                  <td className="text-blue-600">{formatTime(task.reminderTime)}</td>
+                  <td
+                    className={`flex justify-center items-center badge ${task.priority?.toLowerCase() === "urgent"
+                        ? "bg-red-500 text-white"
+                        : task.priority?.toLowerCase() === "high"
+                          ? "bg-yellow-500 text-black"
+                          : task.priority?.toLowerCase() === "medium"
+                            ? "bg-green-500 text-white"
+                            : "bg-blue-500 text-white"
+                      }`}
+                  >
                     {task.priority}
                   </td>
+
                   <td>{task.dueDate || "N/A"}</td>
                   <td>
                     <button
-                      className="btn btn-error btn-sm"
+                      className="btn btn-error bg-[#4c1a36] text-white btn-sm"
                       onClick={() => handleDelete(task._id)}
                     >
                       Delete

@@ -20,7 +20,7 @@ const HowItWorks = () => {
     }, []);
 
     return (
-        <section className="py-20 bg-[#fefdec]">
+        <section className="py-20 w-10/12 mx-auto bg-[#fefdec]">
             {/* Title Section */}
             <div className="text-center mb-16 animate__animated animate__fadeInUp">
                 <h2 className="text-5xl font-bold text-[#4c1a36] tracking-wide">How It Works</h2>
@@ -30,7 +30,7 @@ const HowItWorks = () => {
             </div>
 
             {/* Steps Section - Zig-Zag Flow */}
-            <div className="flex flex-col items-center justify-center gap-2 p-4">
+            <div className="flex  items-center justify-center gap-10 p-4">
                 <div className="">
                     <Lottie
                         animationData={working}
