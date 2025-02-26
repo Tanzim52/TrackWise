@@ -215,7 +215,7 @@ const ExpenseInsights = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-4">
   {/* Risk Radar Chart */}
-  <div className="p-8 rounded-3xl bg-gradient-to-br from-[#fff9f0] to-[#fcefe1] shadow-2xl border-2 border-white/50">
+  <div className="">
     <h2 className="text-3xl font-extrabold text-[#4c1a36] mb-8 flex items-center gap-3">
       <span className="bg-gradient-to-r from-[#4c1a36] to-[#a85751] text-white px-6 py-3 rounded-full shadow-lg">
         Risk Analysis Matrix
@@ -295,7 +295,7 @@ const ExpenseInsights = () => {
   </div>
 
   {/* Spending Pie Chart */}
-  <div className="p-8 rounded-3xl bg-gradient-to-br from-[#fff9f0] to-[#fcefe1] shadow-2xl border-2 border-white/50">
+  <div className="">
     <h2 className="text-3xl font-extrabold text-[#4c1a36] mb-8 flex items-center gap-3">
       <span className="bg-gradient-to-r from-[#4c1a36] to-[#a85751] text-white px-6 py-3 rounded-full shadow-lg">
         Spending Distribution

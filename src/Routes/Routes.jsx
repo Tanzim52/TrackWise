@@ -15,6 +15,7 @@ import AddExpense from './Components/Pages/Expense-features/AddExpense/AddExpens
 import ExpenseInsights from './Components/Pages/Expense-features/Insights/ExpenseInsights';
 import MyBudget from './Components/Pages/Expense-features/MyBudget/MyBudget';
 import DashHome from './Components/Pages/Dashboard/DashHome/DashHome';
+import PrivateRoutes from './Private/PrivateRoutes';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home></Home>
+        element: <PrivateRoutes> <Home></Home> </PrivateRoutes> 
       },
       
       
