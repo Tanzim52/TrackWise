@@ -110,20 +110,20 @@ const MyBudget = () => {
   const totalPercentage = Object.values(categoryPercentages)?.reduce((a, b) => a + b, 0)?.toFixed(2);
 
   return (
-    <div className="bg-gradient-to-r from-[#4c1a36] to-[#395c6b] min-h-screen text-white py-16 px-8 md:px-20">
-      <motion.h2 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
+    <div className=" min-h-screen bg-[#fefdec] text-[#4c1a36] py-16 px-8 md:px-20">
+      <motion.h2 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
         className="text-center text-4xl font-bold">
         💰 Smart Budget Management
       </motion.h2>
 
-      <motion.div data-aos="fade-up" whileHover={{ scale: 1.05 }}
-        className="max-w-3xl mx-auto mt-10 bg-[#fefdec] text-[#4c1a36] p-6 rounded-lg shadow-lg">
+      <motion.div data-aos="fade-up" whileHover={{ scale: 1.005 }}
+        className="max-w-3xl mx-auto mt-10 bg-gradient-to-r from-[#4c1a368d] to-[#d06f8f] text-[#text-[#4c1a36]] p-6 rounded-lg shadow-lg">
         
-        <h4 className="text-2xl font-bold text-center text-[#395c6b] mb-6">Budget Distribution Overview</h4>
+        <h4 className="text-2xl font-bold text-center text-[#fefdec] mb-6">Budget Distribution Overview</h4>
 
         {editing ? (
           <div className="space-y-6">
-            <div className="bg-white p-4 rounded-lg shadow">
+            <div className="bg-[#fefdec] p-4 rounded-lg shadow">
               <label className="block text-lg font-semibold mb-2">Monthly Budget (৳)</label>
               <div className="flex items-center">
                 <FaMoneyBillWave className="text-[#395c6b] text-xl mr-2" />
@@ -134,7 +134,7 @@ const MyBudget = () => {
             </div>
 
             {categories?.map(category => (
-              <div key={category} className="bg-white p-4 rounded-lg shadow">
+              <div key={category} className="bg-[#fefdec] p-4 rounded-lg shadow">
                 <div className="flex justify-between items-center mb-2">
                   <label className="text-lg font-semibold">{category}</label>
                   <span className="text-sm text-gray-600">
@@ -166,14 +166,14 @@ const MyBudget = () => {
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="text-center bg-white p-4 rounded-lg shadow">
+            <div className="text-center bg-[#fefdec] p-4 rounded-lg shadow">
               <h3 className="text-2xl font-bold text-[#4c1a36]">
                 Total Monthly Budget: ৳{monthlyTotal?.toFixed(2)}
               </h3>
             </div>
 
             {categories?.map(category => (
-              <motion.div key={category} whileHover={{ scale: 1.02 }} className="bg-white p-4 rounded-lg shadow">
+              <motion.div key={category} whileHover={{ scale: 1.02 }} className="bg-[#fefdec] p-4 rounded-lg shadow">
                 <h5 className="text-lg font-semibold text-[#4c1a36] mb-2">{category}</h5>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="p-2 bg-gray-100 rounded">
@@ -193,7 +193,7 @@ const MyBudget = () => {
             ))}
 
             <button onClick={() => setEditing(true)}
-              className="w-full bg-[#dfab81] hover:bg-[#4c1a36] text-white py-3 rounded-md font-semibold transition-colors flex items-center justify-center">
+              className="w-full bg-[#fefdec] hover:bg-[#4c1a36] text-[#4c1a36] hover:text-white py-3 rounded-md font-semibold transition-colors flex items-center justify-center">
               <FaEdit className="mr-2" /> Adjust Budget Plan
             </button>
           </div>
