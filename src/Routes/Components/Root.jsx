@@ -4,9 +4,12 @@ import Footer from "./Footer/Footer";
 
 
 const Root = () => {
+    const scrollToSection = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    };
     return (
         <>
-            <NavBar></NavBar>
+            <NavBar scrollToSection={scrollToSection}></NavBar>
             <div className="main-bg">
                 <Outlet></Outlet>
             </div>

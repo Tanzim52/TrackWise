@@ -16,6 +16,7 @@ import ExpenseInsights from './Components/Pages/Expense-features/Insights/Expens
 import MyBudget from './Components/Pages/Expense-features/MyBudget/MyBudget';
 import DashHome from './Components/Pages/Dashboard/DashHome/DashHome';
 import PrivateRoutes from './Private/PrivateRoutes';
+import AboutUs from './Components/About Us/AboutUs';
 // import PrivateRoutes from './Private/PrivateRoutes';
 
 const router = createBrowserRouter([
